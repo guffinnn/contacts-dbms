@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.css": "/comtacts-dbms/static/css/main.31d6cfe0.css",
+    "main.js": "/comtacts-dbms/static/js/main.661a2ce1.js",
+    "index.html": "/comtacts-dbms/index.html",
+    "main.661a2ce1.js.map": "/comtacts-dbms/static/js/main.661a2ce1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.31d6cfe0.css",
+    "static/js/main.661a2ce1.js"
+  ]
+}
