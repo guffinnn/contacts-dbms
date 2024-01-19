@@ -1,12 +1,17 @@
 {
   "files": {
-    "main.css": "/comtacts-dbms/static/css/main.31d6cfe0.css",
-    "main.js": "/comtacts-dbms/static/js/main.661a2ce1.js",
+    "main.css": "/comtacts-dbms/static/css/main.43aa0ebd.css",
+    "main.js": "/comtacts-dbms/static/js/main.255ece3e.js",
     "index.html": "/comtacts-dbms/index.html",
-    "main.661a2ce1.js.map": "/comtacts-dbms/static/js/main.661a2ce1.js.map"
+    "static/media/save.svg": "/comtacts-dbms/static/media/save.f037b36e227dd66ec7b42e2386a0997d.svg",
+    "static/media/export.svg": "/comtacts-dbms/static/media/export.42c84477795ec9b72e9edbf038815fa3.svg",
+    "static/media/import.svg": "/comtacts-dbms/static/media/import.091c96bad9f9de87bc3f1573e0021610.svg",
+    "static/media/filter.svg": "/comtacts-dbms/static/media/filter.73a99df2784d75637e0090281144dcf5.svg",
+    "main.43aa0ebd.css.map": "/comtacts-dbms/static/css/main.43aa0ebd.css.map",
+    "main.255ece3e.js.map": "/comtacts-dbms/static/js/main.255ece3e.js.map"
   },
   "entrypoints": [
-    "static/css/main.31d6cfe0.css",
-    "static/js/main.661a2ce1.js"
+    "static/css/main.43aa0ebd.css",
+    "static/js/main.255ece3e.js"
   ]
 }
