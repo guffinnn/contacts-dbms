@@ -1,10 +1,13 @@
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import HomePage from "./pages/home/HomePage";
 
 function App() {
   return (
-    <div className="App">
-      <HomePage />
-    </div>
+      <Router>
+          <Routes>
+              <Route path="/contacts-dbms" element={<HomePage />} />
+          </Routes>
+      </Router>
   );
 }
 
