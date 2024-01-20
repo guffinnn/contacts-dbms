@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/contacts-dbms/static/css/main.43aa0ebd.css",
-    "main.js": "/contacts-dbms/static/js/main.aaa34b7b.js",
+    "main.css": "/contacts-dbms/static/css/main.f164daf3.css",
+    "main.js": "/contacts-dbms/static/js/main.8413c9aa.js",
     "index.html": "/contacts-dbms/index.html",
     "static/media/save.svg": "/contacts-dbms/static/media/save.f037b36e227dd66ec7b42e2386a0997d.svg",
     "static/media/export.svg": "/contacts-dbms/static/media/export.42c84477795ec9b72e9edbf038815fa3.svg",
     "static/media/import.svg": "/contacts-dbms/static/media/import.091c96bad9f9de87bc3f1573e0021610.svg",
     "static/media/filter.svg": "/contacts-dbms/static/media/filter.73a99df2784d75637e0090281144dcf5.svg",
-    "main.43aa0ebd.css.map": "/contacts-dbms/static/css/main.43aa0ebd.css.map",
-    "main.aaa34b7b.js.map": "/contacts-dbms/static/js/main.aaa34b7b.js.map"
+    "main.f164daf3.css.map": "/contacts-dbms/static/css/main.f164daf3.css.map",
+    "main.8413c9aa.js.map": "/contacts-dbms/static/js/main.8413c9aa.js.map"
   },
   "entrypoints": [
-    "static/css/main.43aa0ebd.css",
-    "static/js/main.aaa34b7b.js"
+    "static/css/main.f164daf3.css",
+    "static/js/main.8413c9aa.js"
   ]
 }
