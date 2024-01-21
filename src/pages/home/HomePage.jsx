@@ -26,9 +26,10 @@ function HomePage() {
                 </div>
             </main>
             {isOpen && (
-                <div className="modal__wrapper" onClick={() => setIsOpen(false)}>
+                <>
                     <Modal />
-                </div>
+                    <div className="modal__wrapper" onClick={() => setIsOpen(false)}></div>
+                </>
             )}
         </div>
     );
