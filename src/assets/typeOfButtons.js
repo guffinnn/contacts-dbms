@@ -1,4 +1,4 @@
-import img1 from './save.svg';
+import img1 from './add.svg';
 import img2 from './import.svg';
 import img3 from './export.svg';
 

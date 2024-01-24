@@ -1,5 +1,5 @@
 .modal__container {
-    width: auto;
+    width: 390px;
     height: auto;
     display: inline-flex;
     padding: 16px 20px;
@@ -36,6 +36,7 @@
 form.form {
     display: flex;
     align-items: flex-start;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -74,6 +75,7 @@ label.label:hover, input.input:hover {
 }
 
 input.input {
+    height: 34.2px;
     display: flex;
     padding: 7.2px 12px;
     align-items: center;
@@ -108,6 +110,18 @@ button.submit__button {
 
 button.submit__button:hover {
     box-shadow: 0 4px 5px 0 rgba(79, 192, 110, 0.30);
+}
+
+.modal__wrapper {
+    position: fixed;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    inset: 0px;
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-tap-highlight-color: transparent;
 }
 
 @media(max-width: 800px) {

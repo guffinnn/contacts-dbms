@@ -1,60 +1,32 @@
 import './Table.css';
 import Select from "../select/Select";
+import {ROWS, CONTACTS} from "../../data";
 
 function Table() {
     return (
         <table className="table">
             <thead>
             <tr>
-                <th className="head__cell">Контакты</th>
-                <th><Select name={'Дата внесения'} /></th>
-                <th><Select name={'ФИО'} /></th>
-                <th><Select name={'Возраст'} /></th>
-                <th><Select name={'Адрес'} /></th>
-                <th><Select name={'[name]'} /></th>
-                <th><Select name={'[name]'} /></th>
-                <th><Select name={'[name]'} /></th>
-                <th><Select name={'[name]'} /></th>
-                <th><Select name={'[name]'} /></th>
+                {Object.keys(ROWS).map(key => (
+                    <th><Select name={ROWS[key]} /></th>
+                ))}
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td className="head__cell">+7 ...</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td className="head__cell">+7 ...</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td className="head__cell">+7 ...</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+                {CONTACTS.map((item, index) => (
+                    <tr key={index}>
+                        <td className="head__cell">{item.phoneNumber}</td>
+                        <td>{item.dateAdded}</td>
+                        <td>{item.fullName}</td>
+                        <td>{item.age}</td>
+                        <td>{item.address}</td>
+                        <td>{item.customField1}</td>
+                        <td>{item.customField2}</td>
+                        <td>{item.customField3}</td>
+                        <td>{item.customField4}</td>
+                        <td>{item.customField5}</td>
+                    </tr>
+                ))}
             </tbody>
         </table>
     );

@@ -42,18 +42,6 @@ main.main {
     border-radius: 4px;
 }
 
-.modal__wrapper {
-    position: fixed;
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    inset: 0px;
-    background-color: rgba(0, 0, 0, 0.5);
-    -webkit-tap-highlight-color: transparent;
-}
-
 @media(max-width: 960px) {
     main.main {
         padding: 0 60px;

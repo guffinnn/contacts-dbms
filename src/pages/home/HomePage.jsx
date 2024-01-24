@@ -6,6 +6,7 @@ import Table from "../../components/table/Table";
 import Modal from "../../components/modal/Modal";
 
 function HomePage() {
+    // Storage a modal state
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -15,22 +16,15 @@ function HomePage() {
             </header>
             <main className="main">
                 <div className="buttons__container">
-                    {/*DELETE ANYWAY*/}
-                    <p onClick={() => setIsOpen(true)}>MODAL</p>
-                    <Button name={'1'} />
-                    <Button name={'2'} />
-                    <Button name={'3'} />
+                    <Button name='1' onChange={() => setIsOpen(true)} />
+                    <Button name='2' />
+                    <Button name='3' />
                 </div>
                 <div className="table__container">
                     <Table />
                 </div>
             </main>
-            {isOpen && (
-                <>
-                    <Modal />
-                    <div className="modal__wrapper" onClick={() => setIsOpen(false)}></div>
-                </>
-            )}
+            {isOpen && <Modal isOpen={isOpen} setIsOpen={setIsOpen} />}
         </div>
     );
 }
