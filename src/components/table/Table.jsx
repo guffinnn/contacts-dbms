@@ -1,9 +1,9 @@
 import './Table.css';
 import Select from "../select/Select";
-import {ROWS, CONTACTS} from "../../data";
+import {ROWS} from "../../data";
 
-function Table() {
-    return (
+function Table({ contacts }) {
+    return (contacts.length > 0) ? (
         <table className="table">
             <thead>
             <tr>
@@ -13,7 +13,7 @@ function Table() {
             </tr>
             </thead>
             <tbody>
-                {CONTACTS.map((item, index) => (
+                {contacts.map((item, index) => (
                     <tr key={index}>
                         <td className="head__cell">{item.phoneNumber}</td>
                         <td>{item.dateAdded}</td>
@@ -29,7 +29,7 @@ function Table() {
                 ))}
             </tbody>
         </table>
-    );
+    ) : null;
 }
 
 export default Table;

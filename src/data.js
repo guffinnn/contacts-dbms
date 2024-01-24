@@ -24,6 +24,14 @@ export const TYPES = {
     customField5: "string"
 };
 
+export const OPTIONS = {
+    "по номеру": "phoneNumber",
+    "по дате": "dateAdded",
+    "по фио": "fullName",
+    "по возрасту": "age",
+    "по адресу": "address"
+};
+
 export let CONTACTS = [
     {
         phoneNumber: "78122930926",
