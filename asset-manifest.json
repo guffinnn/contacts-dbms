@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/contacts-dbms/static/css/main.65c3dafd.css",
-    "main.js": "/contacts-dbms/static/js/main.3932588f.js",
+    "main.js": "/contacts-dbms/static/js/main.84fa02bb.js",
     "index.html": "/contacts-dbms/index.html",
     "static/media/edit.svg": "/contacts-dbms/static/media/edit.59e76d22da27e251b793a19660f29862.svg",
     "static/media/add.svg": "/contacts-dbms/static/media/add.c6f0cb1a67146404eb683c54dbd7118e.svg",
@@ -10,10 +10,10 @@
     "static/media/import.svg": "/contacts-dbms/static/media/import.091c96bad9f9de87bc3f1573e0021610.svg",
     "static/media/filter.svg": "/contacts-dbms/static/media/filter.73a99df2784d75637e0090281144dcf5.svg",
     "main.65c3dafd.css.map": "/contacts-dbms/static/css/main.65c3dafd.css.map",
-    "main.3932588f.js.map": "/contacts-dbms/static/js/main.3932588f.js.map"
+    "main.84fa02bb.js.map": "/contacts-dbms/static/js/main.84fa02bb.js.map"
   },
   "entrypoints": [
     "static/css/main.65c3dafd.css",
-    "static/js/main.3932588f.js"
+    "static/js/main.84fa02bb.js"
   ]
 }
