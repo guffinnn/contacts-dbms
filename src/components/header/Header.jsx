@@ -4,7 +4,7 @@ import filter from '../../assets/filter.svg';
 import account from '../../assets/account.png';
 import {OPTIONS} from "../../data";
 
-function Header({ option, setOption, onChange }) {
+function Header({ option, setOption, onInputChange, onImgClick }) {
     // Storage a state of filter box
     const [isHovered, setIsHovered] = useState(false);
 
@@ -14,7 +14,7 @@ function Header({ option, setOption, onChange }) {
                 <input className="search__input"
                        type="text"
                        placeholder={`Поиск ${option}`}
-                       onChange={onChange} />
+                       onChange={onInputChange} />
                 <div className="filter__box"
                      onMouseEnter={() => setIsHovered(true)}>
                     <img alt="Filter" src={filter} />
@@ -31,7 +31,7 @@ function Header({ option, setOption, onChange }) {
                 </div>
             </div>
             <div className="account__box">
-                <img alt="Account" src={account} />
+                <img className="account__img" alt="Account" src={account} onClick={onImgClick} />
             </div>
         </div>
     );

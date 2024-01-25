@@ -32,6 +32,13 @@ export const OPTIONS = {
     "по адресу": "address"
 };
 
+export const AUTH_ROWS = {
+    email: "Эл. Почта",
+    password: "Пароль"
+};
+
+export const MODAL_TYPES = ['addContact', 'editContact', 'auth'];
+
 export let CONTACTS = [
     {
         phoneNumber: "78122930926",
