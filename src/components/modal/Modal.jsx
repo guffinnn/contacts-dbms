@@ -1,57 +1,14 @@
 import './Modal.css';
 import React, {useState} from "react";
-import {ROWS, CONTACTS, TYPES, AUTH_ROWS, MODAL_TYPES} from "../../data";
+import {ROWS, TYPES, AUTH_ROWS, MODAL_TYPES} from "../../data";
+import {handleAddChange, handleAddSubmit} from './features/addContact';
+import {handleEditChange, handleEditSubmit} from "./features/editContact";
 
-function Modal({ isOpen, setIsOpen, type }) {
+function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact }) {
     // Storage contact data, default - empty object
     const [contact, setContact] = useState(
         Object.keys(ROWS).reduce((obj, key) => ({...obj, [key]: TYPES[key] === 'number' ? 0 : ''}), {})
     );
-
-    // Data validation
-    const isValidData = data => {
-        // Contact validation
-        if (type !== MODAL_TYPES[2] && (data.phoneNumber[0] !== '7' || data.phoneNumber.length !== 11)) {
-            return false;
-        }
-
-        return Object.keys(data).every(key =>
-            TYPES[key] === 'number' ? !isNaN(data[key]) : typeof data[key] === 'string'
-        );
-    }
-
-    // Update contact data when user adding info in input
-    const handleChange = e => {
-        setContact({...contact, [e.target.id]: e.target.value});
-    }
-
-    // Add contact and delete data from form
-    const handleSubmit = e => {
-        e.preventDefault();
-        if (isValidData(contact)) {
-            switch (type) {
-                case MODAL_TYPES[0]:
-                    CONTACTS.push(contact);
-                    break;
-                case MODAL_TYPES[1]:
-                    const index = CONTACTS.findIndex(c => c.id === contact.id);
-                    if (index !== -1) {
-                        CONTACTS[index] = contact;
-                    }
-                    break;
-                case MODAL_TYPES[2]:
-                    // Здесь должна быть логика для входа в систему
-                    break;
-                default:
-                    console.error('Неизвестный тип модального окна');
-            }
-            // Reset data to default values
-            setContact(Object.keys(ROWS).reduce((obj, key) => ({...obj, [key]: TYPES[key] === 'number' ? 0 : ''}), {}));
-            setIsOpen(false);
-        } else {
-            alert('Неверный формат данных');
-        }
-    }
 
     return isOpen ? (
         <>
@@ -66,36 +23,51 @@ function Modal({ isOpen, setIsOpen, type }) {
                     {type === MODAL_TYPES[1] && "Измените данные по контакту"}
                     {type === MODAL_TYPES[2] && "Введите данные аккаунта"}
                 </p>
-                <form className="form" onSubmit={handleSubmit}>
+                <form className="form"
+                      onSubmit={type === MODAL_TYPES[0] && ((e) => {
+                          handleAddSubmit(e, contact, setContact, setIsOpen)
+                      }) || type === MODAL_TYPES[1] && ((e) => {
+                          handleEditSubmit(e, selectedContact, setSelectedContact, setIsOpen)
+                      }) || type === MODAL_TYPES[2] && ((e) => {
+                          e.preventDefault();
+                          alert("Функция пока недоступна");
+                      })}>
                     <div className="labels__frame">
-                        {type !== MODAL_TYPES[2] && Object.keys(ROWS).map(key => (
-                            <label className="label" htmlFor={key}>{ROWS[key]}</label>
+                        {type !== MODAL_TYPES[2] && Object.keys(ROWS).map(index => (
+                            <label key={index} className="label" htmlFor={index}>{ROWS[index]}</label>
                         ))}
-                        {type === MODAL_TYPES[2] && Object.keys(AUTH_ROWS).map(key => (
-                            <label className="label" htmlFor={key}>{AUTH_ROWS[key]}</label>
+                        {type === MODAL_TYPES[2] && Object.keys(AUTH_ROWS).map(index => (
+                            <label key={index} className="label" htmlFor={index}>{AUTH_ROWS[index]}</label>
                         ))}
                     </div>
                     <div className="inputs__frame">
                         {type === MODAL_TYPES[0] && Object.keys(ROWS).map(key => (
-                            <input className="input"
+                            <input key={key}
+                                   className="input"
                                    type={TYPES[key]==="date" ? "date" : "text"}
                                    id={key}
                                    placeholder="Ввести данные"
-                                   onChange={handleChange} />
+                                   onChange={(e) => {
+                                       handleAddChange(e, contact, setContact)
+                                   }} />
                         ))}
                         {type === MODAL_TYPES[1] && Object.keys(ROWS).map(key => (
-                            <input className="input"
+                            <input key={key}
+                                   className="input"
                                    type={TYPES[key]==="date" ? "date" : "text"}
                                    id={key}
-                                   placeholder="DATA"
-                                   onChange={handleChange} />
+                                   placeholder={"\"\""}
+                                   value={selectedContact[key]}
+                                   onChange={(e) => {
+                                       handleEditChange(e, selectedContact, setSelectedContact)
+                                   }} />
                         ))}
                         {type === MODAL_TYPES[2] && Object.keys(AUTH_ROWS).map(key => (
                             <input className="input"
                                    type={key}
                                    id={key}
                                    placeholder="Ввести данные"
-                                   onChange={handleChange} />
+                                   /*onChange={handleChange}*/ />
                         ))}
                     </div>
                     <button className="submit__button" type="submit">Подтвердить</button>

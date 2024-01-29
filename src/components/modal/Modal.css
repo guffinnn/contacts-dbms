@@ -55,6 +55,8 @@ form.form {
 }
 
 label.label {
+    width: auto;
+    max-width: 135px;
     display: flex;
     padding: 8px 12px;
     align-items: center;

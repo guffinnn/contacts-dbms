@@ -1,5 +1,5 @@
 export const ROWS = {
-    phoneNumber: "Контакт",
+    id: "Контакт",
     dateAdded: "Дата внесения",
     fullName: "ФИО",
     age: "Возраст",
@@ -12,7 +12,7 @@ export const ROWS = {
 };
 
 export const TYPES = {
-    phoneNumber: "string",
+    id: "string",
     dateAdded: "date",
     fullName: "string",
     age: "number",
@@ -25,7 +25,7 @@ export const TYPES = {
 };
 
 export const OPTIONS = {
-    "по номеру": "phoneNumber",
+    "по номеру": "__name__",
     "по дате": "dateAdded",
     "по фио": "fullName",
     "по возрасту": "age",

@@ -9,8 +9,8 @@ function Table({ contacts, onEditClick, onDeleteClick }) {
         <table className="table">
             <thead>
             <tr>
-                {Object.keys(ROWS).map(key => (
-                    <th><Select name={ROWS[key]} /></th>
+                {Object.keys(ROWS).map(index => (
+                    <th key={index}><Select name={ROWS[index]} /></th>
                 ))}
             </tr>
             </thead>
@@ -18,16 +18,16 @@ function Table({ contacts, onEditClick, onDeleteClick }) {
                 {contacts.map((item, index) => (
                     <tr key={index}>
                         <td className="head__cell">
-                            {item.phoneNumber}
+                            {item.id}
                             <div className="icon__frame">
                                 <img className="head__icon"
                                      alt="Edit"
                                      src={edit}
-                                     onClick={() => onEditClick(index)} />
+                                     onClick={() => onEditClick(item)} />
                                 <img className="head__icon"
                                      alt="Delete"
                                      src={trash}
-                                     onClick={() => onDeleteClick(index)} />
+                                     onClick={() => onDeleteClick(item)} />
                             </div>
                         </td>
                         <td>{item.dateAdded}</td>

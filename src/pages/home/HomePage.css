@@ -22,6 +22,7 @@ main.main {
     align-items: flex-end;
     gap: 20px;
     align-self: stretch;
+    margin-bottom: 50px;
 }
 
 .buttons__container {
