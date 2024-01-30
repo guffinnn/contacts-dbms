@@ -6,7 +6,7 @@ import Table from "../../components/table/Table";
 import Modal from "../../components/modal/Modal";
 import {OPTIONS, MODAL_TYPES} from "../../data";
 import {db} from '../../firebase';
-import {collection, getDocs, query, startAfter, limit, orderBy, where} from 'firebase/firestore';
+import {collection, getDocs, query, startAfter, limit, where} from 'firebase/firestore';
 
 function HomePage() {
     // Storage a modal state
