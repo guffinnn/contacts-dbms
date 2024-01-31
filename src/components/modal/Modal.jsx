@@ -4,11 +4,11 @@ import {ROWS, TYPES, AUTH_ROWS, MODAL_TYPES} from "../../data";
 import {handleAddChange, handleAddSubmit} from './features/addContact';
 import {handleEditChange, handleEditSubmit} from "./features/editContact";
 
-function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact }) {
+const initialContactState = Object.keys(ROWS).reduce((obj, key) => ({...obj, [key]: TYPES[key] === 'number' ? 0 : ''}), {});
+
+function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact, setFilteredContacts, fetchContacts }) {
     // Storage contact data, default - empty object
-    const [contact, setContact] = useState(
-        Object.keys(ROWS).reduce((obj, key) => ({...obj, [key]: TYPES[key] === 'number' ? 0 : ''}), {})
-    );
+    const [contact, setContact] = useState(initialContactState);
 
     return isOpen ? (
         <>
@@ -27,7 +27,7 @@ function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact })
                       onSubmit={type === MODAL_TYPES[0] && ((e) => {
                           handleAddSubmit(e, contact, setContact, setIsOpen)
                       }) || type === MODAL_TYPES[1] && ((e) => {
-                          handleEditSubmit(e, selectedContact, setSelectedContact, setIsOpen)
+                          handleEditSubmit(e, selectedContact, setSelectedContact, setIsOpen, selectedContact.oldId)
                       }) || type === MODAL_TYPES[2] && ((e) => {
                           e.preventDefault();
                           alert("Функция пока недоступна");
@@ -59,7 +59,7 @@ function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact })
                                    placeholder={"\"\""}
                                    value={selectedContact[key]}
                                    onChange={(e) => {
-                                       handleEditChange(e, selectedContact, setSelectedContact)
+                                       handleEditChange(e, selectedContact, setSelectedContact, setFilteredContacts, fetchContacts)
                                    }} />
                         ))}
                         {type === MODAL_TYPES[2] && Object.keys(AUTH_ROWS).map(key => (

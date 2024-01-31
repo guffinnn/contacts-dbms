@@ -1,9 +1,11 @@
-import {ROWS, CONTACTS, TYPES} from "../../../data";
+import {ROWS, TYPES} from "../../../data";
+import {db} from '../../../firebase';
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 // Data validation
 export const isValidData = (data) => {
     // Phone validation
-    if (data.phoneNumber[0] !== '7' || data.phoneNumber.length !== 11) {
+    if (data.id[0] !== '7' || data.id.length !== 11) {
         return false;
     }
 
@@ -18,11 +20,19 @@ export const handleAddChange = (e, contact, setContact) => {
 }
 
 // Add contact and delete data from form
-export const handleAddSubmit = (e, contact, setContact, setIsOpen) => {
+export const handleAddSubmit = async (e, contact, setContact, setIsOpen) => {
     try {
         e.preventDefault();
         if (isValidData(contact)) {
-            CONTACTS.push(contact);
+            // Check for uniqueness of phoneNumber
+            const docRef = doc(db, 'contacts', contact.id);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                alert('Номер телефона уже существует');
+                return;
+            }
+            // Add contact to Firestore
+            await setDoc(docRef, contact);
             // Reset data to default values
             setContact(Object.keys(ROWS).reduce((obj, key) => ({...obj, [key]: TYPES[key] === 'number' ? 0 : ''}), {}));
             setIsOpen(false);

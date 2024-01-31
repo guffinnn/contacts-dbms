@@ -7,6 +7,8 @@ import Modal from "../../components/modal/Modal";
 import {OPTIONS, MODAL_TYPES} from "../../data";
 import {db} from '../../firebase';
 import {collection, getDocs, query, startAfter, limit, where} from 'firebase/firestore';
+import {onDeleteClick} from "../../components/modal/features/deleteContact";
+import {onEditClick} from "../../components/modal/features/editContact";
 
 function HomePage() {
     // Storage a modal state
@@ -107,11 +109,11 @@ function HomePage() {
                 <div className="table__container">
                     <Table contacts={filteredContacts}
                            onEditClick={(item) => {
-                               setSelectedContact(item);
-                               setIsOpen(true);
-                               setType(MODAL_TYPES[1]);
+                               onEditClick(item, setSelectedContact, setIsOpen, setType);
                            }}
-                        /*onDeleteClick={}*/ />
+                           onDeleteClick={(item) => {
+                               onDeleteClick(item, setFilteredContacts, fetchContacts);
+                           }} />
                 </div>
             </main>
             {isOpen && <Modal isOpen={isOpen}
