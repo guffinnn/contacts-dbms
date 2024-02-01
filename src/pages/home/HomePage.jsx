@@ -5,10 +5,11 @@ import Button from "../../components/button/Button";
 import Table from "../../components/table/Table";
 import Modal from "../../components/modal/Modal";
 import {OPTIONS, MODAL_TYPES} from "../../data";
-import {db} from '../../firebase';
+import {auth, db} from '../../firebase';
 import {collection, getDocs, query, startAfter, limit, where} from 'firebase/firestore';
 import {onDeleteClick} from "../../components/modal/features/deleteContact";
 import {onEditClick} from "../../components/modal/features/editContact";
+import {onAuthStateChanged} from "firebase/auth";
 
 function HomePage() {
     // Storage a modal state
@@ -23,9 +24,11 @@ function HomePage() {
     const [selectedContact, setSelectedContact] = useState(null);
     // State for downloading contacts docs
     const [lastDoc, setLastDoc] = useState(null);
+    // Storage a user account data
+    const [user, setUser] = useState({});
 
     const fetchContacts = async () => {
-        let contactsQuery = query(collection(db, "contacts"),  limit(50));
+        let contactsQuery = query(collection(db, "contacts"),  limit(25));
 
         if (lastDoc) {
             contactsQuery = query(collection(db, "contacts"), startAfter(lastDoc), limit(50));
@@ -60,6 +63,18 @@ function HomePage() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    useEffect(() => {
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                setUser(user);
+            } else {
+                setUser(null);
+                setIsOpen(true);
+                setType(MODAL_TYPES[2]);
+            }
+        });
+    }, []);
+
     // Filter a table by user response
     const filterByResponse = async (e) => {
         const searchQuery = e.target.value;
@@ -67,15 +82,21 @@ function HomePage() {
         if(searchQuery > 0) {
             const key = OPTIONS[option]; // Key for selected option
 
-            const contactsQuery = key === "age" ? query(
-                collection(db, "contacts"),
-                where(key, ">=", Number(searchQuery)),
-                limit(50)
-            ) : query(
+            let contactsQuery = query(
                 collection(db, "contacts"),
                 where(key, ">=", searchQuery),
                 limit(50)
             );
+
+            if(key === 'age') {
+                contactsQuery = query(
+                    collection(db, "contacts"),
+                    where(key, ">=", Number(searchQuery)),
+                    limit(50)
+                );
+            }
+
+            console.log(`${key} >= ${searchQuery}`);
 
             const contactsSnapshot = await getDocs(contactsQuery);
             const contactsList = contactsSnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
@@ -84,7 +105,7 @@ function HomePage() {
         }
     };
 
-    return (
+    return user ? (
         <div className="home__fluid">
             <header className="header">
                 <Header option={option}
@@ -120,8 +141,20 @@ function HomePage() {
                               setIsOpen={setIsOpen}
                               type={type}
                               selectedContact={selectedContact}
-                              setSelectedContact={setSelectedContact} />}
+                              setSelectedContact={setSelectedContact}
+                              user={user}
+                              setUser={setUser} />}
         </div>
+    ) : (
+        <>
+            {isOpen && <Modal isOpen={isOpen}
+                              setIsOpen={setIsOpen}
+                              type={type}
+                              selectedContact={selectedContact}
+                              setSelectedContact={setSelectedContact}
+                              user={user}
+                              setUser={setUser} />}
+        </>
     );
 }
 

@@ -1,14 +1,20 @@
 import './Modal.css';
 import React, {useState} from "react";
-import {ROWS, TYPES, AUTH_ROWS, MODAL_TYPES} from "../../data";
+import {handleInputChange, logIn, logOut} from "./features/auth";
 import {handleAddChange, handleAddSubmit} from './features/addContact';
 import {handleEditChange, handleEditSubmit} from "./features/editContact";
+import {ROWS, TYPES, AUTH_ROWS, MODAL_TYPES} from "../../data";
 
+// Initialise empty object for user data
 const initialContactState = Object.keys(ROWS).reduce((obj, key) => ({...obj, [key]: TYPES[key] === 'number' ? 0 : ''}), {});
 
-function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact, setFilteredContacts, fetchContacts }) {
+function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact, setFilteredContacts, fetchContacts, user, setUser }) {
     // Storage contact data, default - empty object
     const [contact, setContact] = useState(initialContactState);
+    // Storage a user email
+    const [login, setLogin] = useState("");
+    // Storage a user password
+    const [password, setPassword] = useState("");
 
     return isOpen ? (
         <>
@@ -16,29 +22,32 @@ function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact, s
                 <p className="head__text">
                     {type === MODAL_TYPES[0] && "Добавить контакт"}
                     {type === MODAL_TYPES[1] && "Редактировать аккаунт"}
-                    {type === MODAL_TYPES[2] && "Войти в аккаунт"}
+                    {type === MODAL_TYPES[2] && !user && "Войти в аккаунт"}
+                    {type === MODAL_TYPES[2] && user && "Выполнен вход"}
                 </p>
                 <p className="info__text">
                     {type === MODAL_TYPES[0] && "Введите нужные по контакту данные"}
                     {type === MODAL_TYPES[1] && "Измените данные по контакту"}
-                    {type === MODAL_TYPES[2] && "Введите данные аккаунта"}
+                    {type === MODAL_TYPES[2] && !user && "Введите данные аккаунта"}
                 </p>
                 <form className="form"
                       onSubmit={type === MODAL_TYPES[0] && ((e) => {
                           handleAddSubmit(e, contact, setContact, setIsOpen)
                       }) || type === MODAL_TYPES[1] && ((e) => {
                           handleEditSubmit(e, selectedContact, setSelectedContact, setIsOpen, selectedContact.oldId)
-                      }) || type === MODAL_TYPES[2] && ((e) => {
-                          e.preventDefault();
-                          alert("Функция пока недоступна");
+                      }) || type === MODAL_TYPES[2] && !user && ((e) => {
+                          logIn(e, login, password);
+                      }) || type === MODAL_TYPES[2] && user && ((e) => {
+                          logOut(e, login, password);
                       })}>
                     <div className="labels__frame">
                         {type !== MODAL_TYPES[2] && Object.keys(ROWS).map(index => (
                             <label key={index} className="label" htmlFor={index}>{ROWS[index]}</label>
                         ))}
-                        {type === MODAL_TYPES[2] && Object.keys(AUTH_ROWS).map(index => (
+                        {type === MODAL_TYPES[2] && !user && Object.keys(AUTH_ROWS).map(index => (
                             <label key={index} className="label" htmlFor={index}>{AUTH_ROWS[index]}</label>
                         ))}
+                        {type === MODAL_TYPES[2] && user && <label className="label" htmlFor="email">{AUTH_ROWS.email}</label>}
                     </div>
                     <div className="inputs__frame">
                         {type === MODAL_TYPES[0] && Object.keys(ROWS).map(key => (
@@ -62,18 +71,30 @@ function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact, s
                                        handleEditChange(e, selectedContact, setSelectedContact, setFilteredContacts, fetchContacts)
                                    }} />
                         ))}
-                        {type === MODAL_TYPES[2] && Object.keys(AUTH_ROWS).map(key => (
+                        {type === MODAL_TYPES[2] && !user && Object.keys(AUTH_ROWS).map(key => (
                             <input className="input"
                                    type={key}
                                    id={key}
                                    placeholder="Ввести данные"
-                                   /*onChange={handleChange}*/ />
+                                   onChange={(e) => {
+                                       handleInputChange(e, key, setLogin, setPassword)
+                                   }} />
                         ))}
+                        {type === MODAL_TYPES[2] && user && (
+                            <input className="input"
+                                   id="email"
+                                   type="email"
+                                   value={user.email} />
+                        )}
                     </div>
-                    <button className="submit__button" type="submit">Подтвердить</button>
+                    {(type === MODAL_TYPES[2] && user) ? (
+                        <button className="submit__button" type="submit">Выйти</button>
+                    ) : (
+                        <button className="submit__button" type="submit">Подтвердить</button>
+                    )}
                 </form>
             </div>
-            <div className="modal__wrapper" onClick={() => setIsOpen(false)}></div>
+            <div className="modal__wrapper" onClick={() => user ? setIsOpen(false) : null} />
         </>
     ) : null;
 }
