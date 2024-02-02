@@ -16,14 +16,15 @@ function Header({ option, setOption, onInputChange, onImgClick }) {
                        placeholder={`Поиск ${option}`}
                        onChange={onInputChange} />
                 <div className="filter__box"
-                     onMouseEnter={() => setIsHovered(true)}>
+                     onMouseEnter={() => setIsHovered(true)}
+                     onMouseLeave={() => setIsHovered(false)}>
                     <img alt="Filter" src={filter} />
                     {isHovered && (
                         <div className="dropdown">
                             {Object.keys(OPTIONS).map((item, index) => (
                                 <div key={index} className="dropdown__option" onClick={() => {
                                     setIsHovered(false);
-                                    setOption(item)
+                                    setOption(item);
                                 }}>{item}</div>
                             ))}
                         </div>

@@ -84,7 +84,7 @@ function HomePage() {
 
             let contactsQuery = query(
                 collection(db, "contacts"),
-                where(key, ">=", searchQuery),
+                where(key, ">=", [searchQuery]),
                 limit(50)
             );
 
@@ -95,8 +95,6 @@ function HomePage() {
                     limit(50)
                 );
             }
-
-            console.log(`${key} >= ${searchQuery}`);
 
             const contactsSnapshot = await getDocs(contactsQuery);
             const contactsList = contactsSnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));

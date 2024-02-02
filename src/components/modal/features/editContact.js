@@ -1,11 +1,12 @@
 import {isValidData} from './addContact';
 import {db} from '../../../firebase';
 import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
-import {MODAL_TYPES} from "../../../data";
+import {MODAL_TYPES, TYPES} from "../../../data";
 
 // Update contact data when user edits info in input
 export const handleEditChange = (e, selectedContact, setSelectedContact) => {
-    setSelectedContact({...selectedContact, [e.target.id]: e.target.value});
+    const value = TYPES[e.target.id] === 'number' ? Number(e.target.value) : e.target.value;
+    setSelectedContact({...selectedContact, [e.target.id]: value});
 }
 
 // Edit contact and close modal

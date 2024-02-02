@@ -10,13 +10,16 @@ export const isValidData = (data) => {
     }
 
     return Object.keys(data).every(key =>
-        TYPES[key] === 'number' ? !isNaN(data[key]) : typeof data[key] === 'string'
+        TYPES[key] === 'number' ? !isNaN(Number(data[key])) && typeof Number(data[key]) === 'number' :
+            TYPES[key] === 'string' ? typeof data[key] === 'string' :
+                true
     );
 }
 
 // Update contact data when user adding info in input
 export const handleAddChange = (e, contact, setContact) => {
-    setContact({...contact, [e.target.id]: e.target.value});
+    const value = TYPES[e.target.id] === 'number' ? Number(e.target.value) : e.target.value;
+    setContact({...contact, [e.target.id]: value});
 }
 
 // Add contact and delete data from form
