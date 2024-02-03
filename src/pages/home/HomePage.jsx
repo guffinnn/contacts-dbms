@@ -1,5 +1,5 @@
 import './HomePage.css';
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import Header from "../../components/header/Header";
 import Button from "../../components/button/Button";
 import Table from "../../components/table/Table";
@@ -22,26 +22,30 @@ function HomePage() {
     const [option, setOption] = useState("по номеру");
     // State for selected contact
     const [selectedContact, setSelectedContact] = useState(null);
-    // State for downloading contacts docs
-    const [lastDoc, setLastDoc] = useState(null);
     // Storage a user account data
     const [user, setUser] = useState({});
+    // Storage a state of loading
+    const [isLoading, setIsLoading] = useState(false);
+    // Storage a current document from firestore
+    const lastDoc = useRef(null);
 
     const fetchContacts = async () => {
+        setIsLoading(false);
         let contactsQuery = query(collection(db, "contacts"),  limit(25));
 
-        if (lastDoc) {
-            contactsQuery = query(collection(db, "contacts"), startAfter(lastDoc), limit(50));
+        if (lastDoc.current) {
+            contactsQuery = query(collection(db, "contacts"), startAfter(lastDoc.current), limit(25));
         }
 
         const contactsSnapshot = await getDocs(contactsQuery);
         const contactsList = contactsSnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
 
         if (contactsSnapshot.docs.length > 0) {
-            setLastDoc(contactsSnapshot.docs[contactsSnapshot.docs.length - 1]);
+            lastDoc.current = contactsSnapshot.docs[contactsSnapshot.docs.length - 1];
         }
 
         setFilteredContacts(prevContacts => [...prevContacts, ...contactsList]);
+        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -51,17 +55,33 @@ function HomePage() {
     useEffect(() => {
         const handleScroll = () => {
             const bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight;
-            if (bottom) {
+            if (bottom && !isLoading) {
                 // Fetch more contacts
                 fetchContacts();
             }
         };
 
-        window.addEventListener('scroll', handleScroll);
+        // Add timer for handleScroll
+        const throttle = (callee, timeout) => {
+            let timer = null
 
-        // Удаляем обработчик при размонтировании компонента
+            return function perform(...args) {
+                if (timer) return
+
+                timer = setTimeout(() => {
+                    callee(...args)
+
+                    clearTimeout(timer)
+                    timer = null
+                }, timeout)
+            }
+        }
+
+        window.addEventListener('scroll', throttle(handleScroll, 250));
+
+        // Delete listener after scroll
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [isLoading]);
 
     useEffect(() => {
         onAuthStateChanged(auth, user => {
