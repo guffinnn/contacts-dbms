@@ -1,12 +1,12 @@
 import './HomePage.css';
 import React, {useState, useEffect, useRef} from "react";
+import {auth, db} from '../../firebase';
+import {collection, getDocs, query, startAfter, limit, where} from 'firebase/firestore';
 import Header from "../../components/header/Header";
 import Button from "../../components/button/Button";
 import Table from "../../components/table/Table";
 import Modal from "../../components/modal/Modal";
 import {OPTIONS, MODAL_TYPES} from "../../data";
-import {auth, db} from '../../firebase';
-import {collection, getDocs, query, startAfter, limit, where} from 'firebase/firestore';
 import {onDeleteClick} from "../../components/modal/features/deleteContact";
 import {onEditClick} from "../../components/modal/features/editContact";
 import {onAuthStateChanged} from "firebase/auth";
@@ -30,7 +30,7 @@ function HomePage() {
     const lastDoc = useRef(null);
 
     const fetchContacts = async () => {
-        setIsLoading(false);
+        setIsLoading(true);
         let contactsQuery = query(collection(db, "contacts"),  limit(25));
 
         if (lastDoc.current) {
@@ -104,7 +104,7 @@ function HomePage() {
 
             let contactsQuery = query(
                 collection(db, "contacts"),
-                where(key, ">=", [searchQuery]),
+                where(key, ">=", searchQuery),
                 limit(50)
             );
 

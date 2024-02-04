@@ -53,11 +53,13 @@ input.search__input {
     transition: border 0s ease;
 }
 
-.filter__box:hover {
+.filter__box.hovered {
     border-width: 0 0 175px 120px;
     border-color: #fff0;
     border-style: solid;
 }
+
+
 
 .dropdown {
     position: absolute;

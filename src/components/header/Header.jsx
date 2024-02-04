@@ -15,7 +15,7 @@ function Header({ option, setOption, onInputChange, onImgClick }) {
                        type="text"
                        placeholder={`Поиск ${option}`}
                        onChange={onInputChange} />
-                <div className="filter__box"
+                <div className={`filter__box ${isHovered ? 'hovered' : ''}`}
                      onMouseEnter={() => setIsHovered(true)}
                      onMouseLeave={() => setIsHovered(false)}>
                     <img alt="Filter" src={filter} />
