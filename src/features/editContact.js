@@ -1,7 +1,7 @@
 import {isValidData} from './addContact';
-import {db} from '../../../firebase';
+import {db} from '../firebase';
 import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
-import {MODAL_TYPES, TYPES} from "../../../data";
+import {MODAL_TYPES, TYPES} from "../data";
 
 // Update contact data when user edits info in input
 export const handleEditChange = (e, selectedContact, setSelectedContact) => {
@@ -17,15 +17,19 @@ export const handleEditSubmit = async (e, selectedContact, setSelectedContact, s
             // Check for uniqueness of phoneNumber
             const newDocRef = doc(db, 'contacts', selectedContact.id);
             const newDocSnap = await getDoc(newDocRef);
+
             if (newDocSnap.exists() && newDocSnap.id !== oldId) {
                 alert(`Номер телефона ${newDocSnap.id} уже существует`);
                 return;
             }
+
             // Delete old contact in Firestore
             const oldDocRef = doc(db, 'contacts', oldId);
             await deleteDoc(oldDocRef);
+
             // Add new contact to Firestore
             await setDoc(newDocRef, selectedContact);
+
             setSelectedContact(null);
             setIsOpen(false);
         } else {

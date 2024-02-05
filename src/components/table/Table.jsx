@@ -4,13 +4,17 @@ import trash from '../../assets/delete.svg';
 import Select from "../select/Select";
 import {ROWS} from "../../data";
 
-function Table({ contacts, onEditClick, onDeleteClick }) {
+function Table({ contacts, onEditClick, onDeleteClick, contactOptions }) {
     return (contacts.length > 0) ? (
         <table className="table">
             <thead>
             <tr>
                 {Object.keys(ROWS).map(index => (
-                    <th key={index}><Select name={ROWS[index]} /></th>
+                    <th key={index}>
+                        <Select name={ROWS[index]}
+                                options={contactOptions[ROWS[index]]}
+                        />
+                    </th>
                 ))}
             </tr>
             </thead>

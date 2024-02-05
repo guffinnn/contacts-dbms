@@ -1,6 +1,6 @@
-import {ROWS, TYPES} from "../../../data";
-import {db} from '../../../firebase';
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {ROWS, TYPES} from "../data";
+import {db} from '../firebase';
+import {doc, getDoc, getDocs, setDoc, updateDoc} from "firebase/firestore";
 
 // Data validation
 export const isValidData = (data) => {
@@ -22,6 +22,23 @@ export const handleAddChange = (e, contact, setContact) => {
     setContact({...contact, [e.target.id]: value});
 }
 
+// Add uniqueValues in firestore
+export const addUniqueValues = async (contact) => {
+    // Add unique values to Firestore
+    const uniqueValuesRef = doc(db, 'uniqueValues/rows');
+    let uniqueValuesSnap = await getDoc(uniqueValuesRef);
+
+    // If the document exists, update it with the new unique values
+    let uniqueValuesData = uniqueValuesSnap.data();
+    Object.keys(contact).forEach(key => {
+        if (key !== 'id' && !uniqueValuesData[key].includes(contact[key])) {
+            uniqueValuesData[key].push(contact[key]);
+        }
+    });
+
+    await updateDoc(uniqueValuesRef, uniqueValuesData);
+}
+
 // Add contact and delete data from form
 export const handleAddSubmit = async (e, contact, setContact, setIsOpen) => {
     try {
@@ -34,8 +51,12 @@ export const handleAddSubmit = async (e, contact, setContact, setIsOpen) => {
                 alert('Номер телефона уже существует');
                 return;
             }
+
             // Add contact to Firestore
             await setDoc(docRef, contact);
+
+            /*addUniqueValues(contact);*/
+
             // Reset data to default values
             setContact(Object.keys(ROWS).reduce((obj, key) => ({...obj, [key]: TYPES[key] === 'number' ? 0 : ''}), {}));
             setIsOpen(false);

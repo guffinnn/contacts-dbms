@@ -6,9 +6,9 @@ import Header from "../../components/header/Header";
 import Button from "../../components/button/Button";
 import Table from "../../components/table/Table";
 import Modal from "../../components/modal/Modal";
-import {OPTIONS, MODAL_TYPES} from "../../data";
-import {onDeleteClick} from "../../components/modal/features/deleteContact";
-import {onEditClick} from "../../components/modal/features/editContact";
+import {OPTIONS, MODAL_TYPES, ROWS} from "../../data";
+import {onDeleteClick} from "../../features/deleteContact";
+import {onEditClick} from "../../features/editContact";
 import {onAuthStateChanged} from "firebase/auth";
 
 function HomePage() {
@@ -28,7 +28,10 @@ function HomePage() {
     const [isLoading, setIsLoading] = useState(false);
     // Storage a current document from firestore
     const lastDoc = useRef(null);
+    // Options for Select component (filter)
+    const [contactOptions, setContactOptions] = useState([]);
 
+    // Fetch a contacts from firebase to Table component
     const fetchContacts = async () => {
         setIsLoading(true);
         let contactsQuery = query(collection(db, "contacts"),  limit(25));
@@ -48,8 +51,33 @@ function HomePage() {
         setIsLoading(false);
     };
 
+    useEffect(() => fetchContacts, []);
+
     useEffect(() => {
-        fetchContacts();
+        // Check an auth status
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                setUser(user);
+            } else {
+                setUser(null);
+                setIsOpen(true);
+                setType(MODAL_TYPES[2]);
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        // Fetch a unique data from firebase to Select component
+        const fetchData = async () => {
+            const data = await getDocs(collection(db, 'uniqueValues'));
+            const options = {};
+            Object.keys(ROWS).forEach(key => {
+                options[ROWS[key]] = [...new Set(data.docs.flatMap(doc => doc.data()[key]))];
+            });
+            setContactOptions(options);
+        };
+
+        fetchData();
     }, []);
 
     useEffect(() => {
@@ -82,18 +110,6 @@ function HomePage() {
         // Delete listener after scroll
         return () => window.removeEventListener('scroll', handleScroll);
     }, [isLoading]);
-
-    useEffect(() => {
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-                setIsOpen(true);
-                setType(MODAL_TYPES[2]);
-            }
-        });
-    }, []);
 
     // Filter a table by user response
     const filterByResponse = async (e) => {
@@ -152,7 +168,8 @@ function HomePage() {
                            }}
                            onDeleteClick={(item) => {
                                onDeleteClick(item, setFilteredContacts, fetchContacts);
-                           }} />
+                           }}
+                           contactOptions={contactOptions} />
                 </div>
             </main>
             {isOpen && <Modal isOpen={isOpen}

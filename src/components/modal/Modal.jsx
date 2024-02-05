@@ -1,9 +1,9 @@
 import './Modal.css';
 import React, {useState} from "react";
 import {IMaskInput} from 'react-imask';
-import {handleInputChange, logIn, logOut} from "./features/auth";
-import {handleAddChange, handleAddSubmit} from './features/addContact';
-import {handleEditChange, handleEditSubmit} from "./features/editContact";
+import {handleInputChange, logIn, logOut} from "../../features/auth";
+import {handleAddChange, handleAddSubmit} from '../../features/addContact';
+import {handleEditChange, handleEditSubmit} from "../../features/editContact";
 import {ROWS, TYPES, AUTH_ROWS, MODAL_TYPES} from "../../data";
 
 // Initialise empty object for user data

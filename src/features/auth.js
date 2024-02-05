@@ -1,4 +1,4 @@
-import {auth} from "../../../firebase";
+import {auth} from "../firebase";
 import {signInWithEmailAndPassword, signOut} from 'firebase/auth';
 
 export const handleInputChange = (e, type, setLogin, setPassword) => {
