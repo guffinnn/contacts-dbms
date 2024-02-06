@@ -1,6 +1,6 @@
 import {ROWS, TYPES} from "../data";
 import {db} from '../firebase';
-import {doc, getDoc, getDocs, setDoc, updateDoc} from "firebase/firestore";
+import {doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
 
 // Data validation
 export const isValidData = (data) => {
@@ -31,7 +31,7 @@ export const addUniqueValues = async (contact) => {
     // If the document exists, update it with the new unique values
     let uniqueValuesData = uniqueValuesSnap.data();
     Object.keys(contact).forEach(key => {
-        if (key !== 'id' && !uniqueValuesData[key].includes(contact[key])) {
+        if (key !== 'id' && contact[key] !== "" && contact[key] !== 0 && !uniqueValuesData[key].includes(contact[key])) {
             uniqueValuesData[key].push(contact[key]);
         }
     });
@@ -55,7 +55,7 @@ export const handleAddSubmit = async (e, contact, setContact, setIsOpen) => {
             // Add contact to Firestore
             await setDoc(docRef, contact);
 
-            /*addUniqueValues(contact);*/
+            addUniqueValues(contact);
 
             // Reset data to default values
             setContact(Object.keys(ROWS).reduce((obj, key) => ({...obj, [key]: TYPES[key] === 'number' ? 0 : ''}), {}));

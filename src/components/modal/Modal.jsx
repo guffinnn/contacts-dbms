@@ -53,7 +53,7 @@ function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact, s
                     <div className="inputs__frame">
                         {type === MODAL_TYPES[0] && Object.keys(ROWS).map(key => (
                             <div key={key}>
-                                {ROWS[key] === "Контакт" ? (
+                                {ROWS[key] === "Контакт" && (
                                     <IMaskInput
                                         mask="+{7} (000) 000-00-00"
                                         unmask={true}
@@ -61,16 +61,17 @@ function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact, s
                                         onAccept={(value) => {
                                             handleAddChange({target: {value, id: key}}, contact, setContact)
                                         }                                        }
-                                        placeholder="+7 (111) 222-33-44"
+                                        placeholder="+7 (___) ___-__-__"
                                         id={key}
                                         className="input"
                                     />
-                                ) : (
+                                )}
+                                {ROWS[key] !== "Контакт" && (
                                     <input
                                         className="input"
                                         type={TYPES[key] !== "string" ? TYPES[key] : "text"}
                                         id={key}
-                                        placeholder="Ввести данные"
+                                        placeholder={ROWS[key] === "Адрес" ? "Регион, улица" : "Ввести данные"}
                                         onChange={(e) => {
                                             handleAddChange(e, contact, setContact)
                                         }} />
@@ -87,7 +88,7 @@ function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact, s
                                         onAccept={(value) => {
                                             handleAddChange({target: {value, id: key}}, contact, setContact)
                                         }                                        }
-                                        placeholder="+7 (111) 222-33-44"
+                                        placeholder="+7 (___) ___-__-__"
                                         id={key}
                                         className="input"
                                     />
