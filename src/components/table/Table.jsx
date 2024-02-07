@@ -3,10 +3,12 @@ import edit from '../../assets/edit.svg';
 import trash from '../../assets/delete.svg';
 import Select from "../select/Select";
 import {ROWS} from "../../data";
+import error from '../../assets/error.svg';
 
 function Table({ contacts, onEditClick, onDeleteClick, contactOptions }) {
     return (contacts.length > 0) ? (
-        <table className="table">
+        <div className="table__container">
+            <table className="table">
             <thead>
             <tr>
                 {Object.keys(ROWS).map(index => (
@@ -72,7 +74,18 @@ function Table({ contacts, onEditClick, onDeleteClick, contactOptions }) {
             ))}
             </tbody>
         </table>
-    ) : null;
+        </div>
+    ) : (
+        <div className="error__container">
+            <div className="error__image">
+                <img alt="Error" src={error} className="image__content" />
+            </div>
+            <div className="error__info">
+                <p className="error__head">По вашему запросу ничего не найдено</p>
+                <p className="error__text">Введите другие данные</p>
+            </div>
+        </div>
+    );
 }
 
 export default Table;

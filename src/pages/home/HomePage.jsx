@@ -161,16 +161,14 @@ function HomePage() {
                     <Button name='3' />
                 </div>
                 <p className="info__text" style={{"margin": "0 0 -14px 0"}}>Отображается: {filteredContacts.length} из INF</p>
-                <div className="table__container">
-                    <Table contacts={filteredContacts}
-                           onEditClick={(item) => {
-                               onEditClick(item, setSelectedContact, setIsOpen, setType);
-                           }}
-                           onDeleteClick={(item) => {
-                               onDeleteClick(item, setFilteredContacts, fetchContacts);
-                           }}
-                           contactOptions={contactOptions} />
-                </div>
+                <Table contacts={filteredContacts}
+                       onEditClick={(item) => {
+                           onEditClick(item, setSelectedContact, setIsOpen, setType);
+                       }}
+                       onDeleteClick={(item) => {
+                           onDeleteClick(item, setFilteredContacts, fetchContacts);
+                       }}
+                       contactOptions={contactOptions} />
             </main>
             {isOpen && <Modal isOpen={isOpen}
                               setIsOpen={setIsOpen}
