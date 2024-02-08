@@ -162,6 +162,7 @@ function HomePage() {
                 </div>
                 <p className="info__text" style={{"margin": "0 0 -14px 0"}}>Отображается: {filteredContacts.length} из INF</p>
                 <Table contacts={filteredContacts}
+                       setContacts={setFilteredContacts}
                        onEditClick={(item) => {
                            onEditClick(item, setSelectedContact, setIsOpen, setType);
                        }}

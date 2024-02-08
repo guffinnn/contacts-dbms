@@ -1,11 +1,8 @@
 import './Select.css';
-import { useState } from 'react';
 
-function Select({ name, options }) {
-    const [selected, setSelected] = useState(name);
-
+function Select({ name, options, onOptionChange }) {
     const handleChange = (event) => {
-        setSelected(event.target.value);
+        onOptionChange(name, event.target.value);
     };
 
     return (
