@@ -16,8 +16,6 @@ function HomePage() {
     const [isOpen, setIsOpen] = useState(false);
     // Storage a modal type
     const [type, setType] = useState(MODAL_TYPES[0]);
-    // Storage a filtered contacts
-    const [filteredContacts, setFilteredContacts] = useState([]);
     // Storage an option state
     const [option, setOption] = useState("по номеру");
     // State for selected contact
@@ -26,11 +24,14 @@ function HomePage() {
     const [user, setUser] = useState({});
     // Storage a state of loading
     const [isLoading, setIsLoading] = useState(false);
-    // Storage a current document from firestore
-    const lastDoc = useRef(null);
+
     // Options for Select component (filter)
     const [contactOptions, setContactOptions] = useState([]);
+    // Storage a filtered contacts
+    const [filteredContacts, setFilteredContacts] = useState([]);
 
+    // Storage a current document from firestore
+    const lastDoc = useRef(null);
     // Fetch a contacts from firebase to Table component
     const fetchContacts = async () => {
         setIsLoading(true);
@@ -47,12 +48,14 @@ function HomePage() {
             lastDoc.current = contactsSnapshot.docs[contactsSnapshot.docs.length - 1];
         }
 
-        setFilteredContacts(prevContacts => [...prevContacts, ...contactsList]);
-        setIsLoading(false);
+        setFilteredContacts(prevContacts => {
+            return [...prevContacts, ...contactsList];
+        });
     };
 
     useEffect(() => fetchContacts, []);
 
+    // Auth
     useEffect(() => {
         // Check an auth status
         onAuthStateChanged(auth, user => {
@@ -66,6 +69,7 @@ function HomePage() {
         });
     }, []);
 
+    // Fetch uniqueValues for Select
     useEffect(() => {
         // Fetch a unique data from firebase to Select component
         const fetchData = async () => {
@@ -80,6 +84,7 @@ function HomePage() {
         fetchData();
     }, []);
 
+    // Pagination
     useEffect(() => {
         const handleScroll = () => {
             const bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight;
@@ -121,14 +126,14 @@ function HomePage() {
             let contactsQuery = query(
                 collection(db, "contacts"),
                 where(key, ">=", searchQuery),
-                limit(50)
+                limit(25)
             );
 
             if(key === 'age') {
                 contactsQuery = query(
                     collection(db, "contacts"),
                     where(key, ">=", Number(searchQuery)),
-                    limit(50)
+                    limit(25)
                 );
             }
 
