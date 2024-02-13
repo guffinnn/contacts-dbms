@@ -1,7 +1,7 @@
 import './HomePage.css';
 import React, {useState, useEffect, useRef} from "react";
 import {auth, db} from '../../firebase';
-import {collection, getDocs, query, startAfter, limit, where} from 'firebase/firestore';
+import {collection, getDocs, query, startAfter,  limit, where} from 'firebase/firestore';
 import Header from "../../components/header/Header";
 import Button from "../../components/button/Button";
 import Table from "../../components/table/Table";
@@ -42,47 +42,18 @@ function HomePage() {
         }
 
         const contactsSnapshot = await getDocs(contactsQuery);
-        const contactsList = contactsSnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-
-        if (contactsSnapshot.docs.length > 0) {
-            lastDoc.current = contactsSnapshot.docs[contactsSnapshot.docs.length - 1];
-        }
+        const contactsList = contactsSnapshot.docs.map(doc => ({id: doc.id, doc: doc, ...doc.data()}));
 
         setFilteredContacts(prevContacts => {
             return [...prevContacts, ...contactsList];
         });
     };
 
-    useEffect(() => fetchContacts, []);
-
-    // Auth
     useEffect(() => {
-        // Check an auth status
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-                setIsOpen(true);
-                setType(MODAL_TYPES[2]);
-            }
-        });
-    }, []);
-
-    // Fetch uniqueValues for Select
-    useEffect(() => {
-        // Fetch a unique data from firebase to Select component
-        const fetchData = async () => {
-            const data = await getDocs(collection(db, 'uniqueValues'));
-            const options = {};
-            Object.keys(ROWS).forEach(key => {
-                options[ROWS[key]] = [...new Set(data.docs.flatMap(doc => doc.data()[key]))];
-            });
-            setContactOptions(options);
-        };
-
-        fetchData();
-    }, []);
+        if (filteredContacts.length > 0) {
+            lastDoc.current = filteredContacts[filteredContacts.length - 1].doc;
+        }
+    }, [filteredContacts]);
 
     // Pagination
     useEffect(() => {
@@ -121,6 +92,9 @@ function HomePage() {
         const searchQuery = e.target.value;
 
         if(searchQuery > 0) {
+            // Reset the lastDoc for the original query
+            lastDoc.current = null;
+
             const key = OPTIONS[option]; // Key for selected option
 
             let contactsQuery = query(
@@ -138,11 +112,40 @@ function HomePage() {
             }
 
             const contactsSnapshot = await getDocs(contactsQuery);
-            const contactsList = contactsSnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+            const contactsList = contactsSnapshot.docs.map(doc => ({id: doc.id, doc: doc, ...doc.data()}));
 
             setFilteredContacts(contactsList);
         }
     };
+
+    // Auth
+    useEffect(() => {
+        // Check an auth status
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                setUser(user);
+            } else {
+                setUser(null);
+                setIsOpen(true);
+                setType(MODAL_TYPES[2]);
+            }
+        });
+    }, []);
+
+    // Fetch uniqueValues for Select
+    useEffect(() => {
+        // Fetch a unique data from firebase to Select component
+        const fetchData = async () => {
+            const data = await getDocs(collection(db, 'uniqueValues'));
+            const options = {};
+            Object.keys(ROWS).forEach(key => {
+                options[ROWS[key]] = [...new Set(data.docs.flatMap(doc => doc.data()[key]))];
+            });
+            setContactOptions(options);
+        };
+
+        fetchData();
+    }, []);
 
     return user ? (
         <div className="home__fluid">
