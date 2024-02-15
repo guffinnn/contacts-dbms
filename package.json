@@ -1,6 +1,6 @@
 {
-  "homepage": "https://guffinnn.github.io/contacts-dbms",
-  "name": "contacts-dbms",
+  "homepage": "https://guffinnn.github.io/transport-dbms",
+  "name": "transport-dbms",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -9,7 +9,7 @@ function Select({ name, options, onOptionChange }) {
         <div className="select__frame">
             <select className="select" onChange={handleChange}>
                 <option>{name}</option>
-                {options.length > 0 && options.map((option, index) => (
+                {options && options.length > 0 && options.map((option, index) => (
                     <option key={index} value={option}>
                         {option}
                     </option>

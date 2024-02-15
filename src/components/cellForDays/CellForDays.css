@@ -1,0 +1,7 @@
+#day__name {
+    list-style-type: none; /* Убираем маркеры у списка */
+}
+
+#day__name:before {
+    content: "✔ "; /* Добавляем в качестве маркера символ */
+}

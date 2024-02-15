@@ -1,35 +1,27 @@
 export const ROWS = {
-    id: "Контакт",
-    dateAdded: "Дата внесения",
-    fullName: "ФИО",
-    age: "Возраст",
-    address: "Адрес",
-    customField1: "пусто",
-    customField2: "пусто",
-    customField3: "пусто",
-    customField4: "пусто",
-    customField5: "пусто"
+    id: "Номер",
+    from: "Откуда",
+    to: "Куда",
+    stops: "Маршрут",
+    days: "Курсирование",
+    type_of_transport: "Вид транспорта"
 };
 
 export const TYPES = {
     id: "string",
-    dateAdded: "date",
-    fullName: "string",
-    age: "number",
-    address: "string",
-    customField1: "string",
-    customField2: "string",
-    customField3: "string",
-    customField4: "string",
-    customField5: "string"
+    from: "string",
+    to: "string",
+    stops: "string",
+    days: "string",
+    type_of_transport: "string"
 };
 
 export const OPTIONS = {
     "по номеру": "__name__",
-    "по дате": "dateAdded",
-    "по фио": "fullName",
-    "по возрасту": "age",
-    "по адресу": "address"
+    "по станциям": "stops",
+    "по отправлению": "from",
+    "по прибытию": "to",
+    "по транспорту": "type_of_transport"
 };
 
 export const AUTH_ROWS = {
@@ -37,4 +29,23 @@ export const AUTH_ROWS = {
     password: "Пароль"
 };
 
-export const MODAL_TYPES = ['addContact', 'editContact', 'auth'];
+export const MODAL_TYPES = ['addRoute', 'editRoute', 'auth'];
+
+export const DAYS_COMBO = {
+    "пвсчп св": "Каждый день",
+    "пвсчп": "По будним дням",
+    "св": "По выходным дням"
+};
+
+export const DAYS_BEFORE = {
+    'п': 'Понедельник',
+    'в': 'Вторник',
+    'с': 'Среда',
+    'ч': 'Четверг'
+};
+
+export const DAYS_AFTER = {
+    'п': 'Пятница',
+    'с': 'Суббота',
+    'в': 'Воскресенье'
+}

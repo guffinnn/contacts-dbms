@@ -1,17 +1,16 @@
 import './Modal.css';
 import React, {useState} from "react";
-import {IMaskInput} from 'react-imask';
 import {handleInputChange, logIn, logOut} from "../../features/auth";
-import {handleAddChange, handleAddSubmit} from '../../features/addContact';
-import {handleEditChange, handleEditSubmit} from "../../features/editContact";
+import {handleAddChange, handleAddSubmit} from '../../features/addRoute';
+import {handleEditChange, handleEditSubmit} from "../../features/editRoute";
 import {ROWS, TYPES, AUTH_ROWS, MODAL_TYPES} from "../../data";
 
 // Initialise empty object for user data
-const initialContactState = Object.keys(ROWS).reduce((obj, key) => ({...obj, [key]: TYPES[key] === 'number' ? 0 : ''}), {});
+const initialRouteState = Object.keys(ROWS).reduce((obj, key) => ({...obj, [key]: TYPES[key] === 'number' ? 0 : ''}), {});
 
-function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact, setFilteredContacts, fetchContacts, user }) {
-    // Storage contact data, default - empty object
-    const [contact, setContact] = useState(initialContactState);
+function Modal({ isOpen, setIsOpen, type, selectedRoute, setSelectedRoute, setFilteredRoutes, fetchRoutes, user }) {
+    // Storage route data, default - empty object
+    const [route, setRoute] = useState(initialRouteState);
     // Storage a user email
     const [login, setLogin] = useState("");
     // Storage a user password
@@ -21,21 +20,22 @@ function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact, s
         <>
             <div className="modal__container">
                 <p className="head__text">
-                    {type === MODAL_TYPES[0] && "Добавить контакт"}
-                    {type === MODAL_TYPES[1] && "Редактировать аккаунт"}
+                    {type === MODAL_TYPES[0] && "Добавить маршрут"}
+                    {type === MODAL_TYPES[1] && "Редактировать маршрут"}
                     {type === MODAL_TYPES[2] && !user && "Войти в аккаунт"}
                     {type === MODAL_TYPES[2] && user && "Выполнен вход"}
                 </p>
                 <p className="info__text">
-                    {type === MODAL_TYPES[0] && "Введите нужные по контакту данные"}
-                    {type === MODAL_TYPES[1] && "Измените данные по контакту"}
+                    {type === MODAL_TYPES[0] && "Введите нужные по маршруту данные"}
+                    {type === MODAL_TYPES[1] && "Измените данные по маршруту"}
                     {type === MODAL_TYPES[2] && !user && "Введите данные аккаунта"}
                 </p>
                 <form className="form"
                       onSubmit={type === MODAL_TYPES[0] && ((e) => {
-                          handleAddSubmit(e, contact, setContact, setIsOpen)
+                          handleAddSubmit(e, route, setRoute, setIsOpen)
                       }) || type === MODAL_TYPES[1] && ((e) => {
-                          handleEditSubmit(e, selectedContact, setSelectedContact, setIsOpen, selectedContact.oldId)
+                          alert('Пока что нельзя редактировать маршруты 🥲');
+                          /*handleEditSubmit(e, selectedRoute, setSelectedRoute, setIsOpen, selectedRoute.oldId)*/
                       }) || type === MODAL_TYPES[2] && !user && ((e) => {
                           logIn(e, login, password);
                       }) || type === MODAL_TYPES[2] && user && ((e) => {
@@ -53,54 +53,29 @@ function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact, s
                     <div className="inputs__frame">
                         {type === MODAL_TYPES[0] && Object.keys(ROWS).map(key => (
                             <div key={key}>
-                                {ROWS[key] === "Контакт" && (
-                                    <IMaskInput
-                                        mask="+{7} (000) 000-00-00"
-                                        unmask={true}
-                                        value={contact[key]}
-                                        onAccept={(value) => {
-                                            handleAddChange({target: {value, id: key}}, contact, setContact)
-                                        }                                        }
-                                        placeholder="+7 (___) ___-__-__"
-                                        id={key}
-                                        className="input"
-                                    />
-                                )}
-                                {ROWS[key] !== "Контакт" && (
+                                {ROWS[key] && (
                                     <input
                                         className="input"
                                         type={TYPES[key] !== "string" ? TYPES[key] : "text"}
                                         id={key}
-                                        placeholder={ROWS[key] === "Адрес" ? "Регион, улица" : "Ввести данные"}
+                                        placeholder={"Ввести данные"}
                                         onChange={(e) => {
-                                            handleAddChange(e, contact, setContact)
+                                            handleAddChange(e, route, setRoute)
                                         }} />
                                 )}
                             </div>
                         ))}
                         {type === MODAL_TYPES[1] && Object.keys(ROWS).map(key => (
                             <div key={key}>
-                                {ROWS[key] === "Контакт" ? (
-                                    <IMaskInput
-                                        mask="+{7} (000) 000-00-00"
-                                        unmask={true}
-                                        value={selectedContact[key]}
-                                        onAccept={(value) => {
-                                            handleAddChange({target: {value, id: key}}, contact, setContact)
-                                        }                                        }
-                                        placeholder="+7 (___) ___-__-__"
-                                        id={key}
-                                        className="input"
-                                    />
-                                ) : (
+                                {ROWS[key] && (
                                     <input className="input"
                                            type={TYPES[key] === "number" ? TYPES[key] : "text"}
                                            id={key}
                                            placeholder={"\"\""}
-                                           value={selectedContact[key]}
+                                           value={selectedRoute[key]}
                                            onChange={(e) => {
-                                               handleEditChange(e, selectedContact, setSelectedContact, setFilteredContacts, fetchContacts)
-                                           }} />
+                                               handleEditChange(e, selectedRoute, setSelectedRoute, setFilteredRoutes, fetchRoutes)
+                                           }}/>
                                 )}
                             </div>
                         ))}
@@ -111,7 +86,7 @@ function Modal({ isOpen, setIsOpen, type, selectedContact, setSelectedContact, s
                                    placeholder="Ввести данные"
                                    onChange={(e) => {
                                        handleInputChange(e, key, setLogin, setPassword)
-                                   }} />
+                                   }}/>
                         ))}
                         {type === MODAL_TYPES[2] && user && (
                             <input className="input"

@@ -30,20 +30,13 @@
     border-left: 1px solid #ddd;
 }
 
-.table tr td:first-child {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    align-content: center;
-    justify-content: space-between;
-    align-items: center;
-    row-gap: 10px;
-}
+.table tr td:first-child {}
 
 .icon__frame {
     scale: 0;
     display: flex;
     gap: 10px;
+    margin-top: 10px;
 }
 
 .head__cell:hover .icon__frame {
@@ -125,6 +118,14 @@
     font-size: 14.8331px;
     line-height: 130%;
     color: rgba(0, 0, 0, 0.6);
+}
+
+#stops__name {
+    list-style-type: none; /* Убираем маркеры у списка */
+}
+
+#stops__name:before {
+    content: "📍 "; /* Добавляем в качестве маркера символ */
 }
 
 @media(max-width: 960px) {

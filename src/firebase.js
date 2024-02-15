@@ -5,13 +5,14 @@ import {getFirestore} from 'firebase/firestore';
 import {getFunctions} from 'firebase/functions';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBeqFAHvPqlEfBpM06Dzz2uxcHkIC6gvi4",
-    authDomain: "contacts-dbms.firebaseapp.com",
-    projectId: "contacts-dbms",
-    storageBucket: "contacts-dbms.appspot.com",
-    messagingSenderId: "628752789938",
-    appId: "1:628752789938:web:ab2a97e7f2e6beeb5db4ab",
-    measurementId: "G-1NNQZRVS86"
+    apiKey: "AIzaSyAZfwwbPbs54XeAPdUC1cK_iXGJ17tLWS0",
+    authDomain: "urban-transport-bf307.firebaseapp.com",
+    databaseURL: "https://urban-transport-bf307-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "urban-transport-bf307",
+    storageBucket: "urban-transport-bf307.appspot.com",
+    messagingSenderId: "513585789062",
+    appId: "1:513585789062:web:a358ada75f02de4153b907",
+    measurementId: "G-3CSWJTKBSN"
 };
 
 const app = initializeApp(firebaseConfig);

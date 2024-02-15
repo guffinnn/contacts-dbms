@@ -6,9 +6,9 @@ import Header from "../../components/header/Header";
 import Button from "../../components/button/Button";
 import Table from "../../components/table/Table";
 import Modal from "../../components/modal/Modal";
-import {OPTIONS, MODAL_TYPES, ROWS} from "../../data";
-import {onDeleteClick} from "../../features/deleteContact";
-import {onEditClick} from "../../features/editContact";
+import {OPTIONS, MODAL_TYPES} from "../../data";
+import {onDeleteClick} from "../../features/deleteRoute";
+import {onEditClick} from "../../features/editRoute";
 import {onAuthStateChanged} from "firebase/auth";
 
 function HomePage() {
@@ -18,50 +18,50 @@ function HomePage() {
     const [type, setType] = useState(MODAL_TYPES[0]);
     // Storage an option state
     const [option, setOption] = useState("по номеру");
-    // State for selected contact
-    const [selectedContact, setSelectedContact] = useState(null);
+    // State for selected route
+    const [selectedRoute, setSelectedRoute] = useState(null);
     // Storage a user account data
     const [user, setUser] = useState({});
     // Storage a state of loading
     const [isLoading, setIsLoading] = useState(false);
 
     // Options for Select component (filter)
-    const [contactOptions, setContactOptions] = useState([]);
-    // Storage a filtered contacts
-    const [filteredContacts, setFilteredContacts] = useState([]);
+    const [routeOptions, setRouteOptions] = useState([]);
+    // Storage a filtered routes
+    const [filteredRoutes, setFilteredRoutes] = useState([]);
 
     // Storage a current document from firestore
     const lastDoc = useRef(null);
-    // Fetch a contacts from firebase to Table component
-    const fetchContacts = async () => {
+    // Fetch a routes from firebase to Table component
+    const fetchRoutes = async () => {
         setIsLoading(true);
-        let contactsQuery = query(collection(db, "contacts"),  limit(25));
+        let routesQuery = query(collection(db, "routes"),  limit(25));
 
         if (lastDoc.current) {
-            contactsQuery = query(collection(db, "contacts"), startAfter(lastDoc.current), limit(25));
+            routesQuery = query(collection(db, "routes"), startAfter(lastDoc.current), limit(25));
         }
 
-        const contactsSnapshot = await getDocs(contactsQuery);
-        const contactsList = contactsSnapshot.docs.map(doc => ({id: doc.id, doc: doc, ...doc.data()}));
+        const routesSnapshot = await getDocs(routesQuery);
+        const routesList = routesSnapshot.docs.map(doc => ({id: doc.id, doc: doc, ...doc.data()}));
 
-        setFilteredContacts(prevContacts => {
-            return [...prevContacts, ...contactsList];
+        setFilteredRoutes(prevRoutes => {
+            return [...prevRoutes, ...routesList];
         });
     };
 
     useEffect(() => {
-        if (filteredContacts.length > 0) {
-            lastDoc.current = filteredContacts[filteredContacts.length - 1].doc;
+        if (filteredRoutes.length > 0) {
+            lastDoc.current = filteredRoutes[filteredRoutes.length - 1].doc;
         }
-    }, [filteredContacts]);
+    }, [filteredRoutes]);
 
     // Pagination
     useEffect(() => {
         const handleScroll = () => {
             const bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight;
             if (bottom && !isLoading) {
-                // Fetch more contacts
-                fetchContacts();
+                // Fetch more routes
+                fetchRoutes();
             }
         };
 
@@ -91,30 +91,22 @@ function HomePage() {
     const filterByResponse = async (e) => {
         const searchQuery = e.target.value;
 
-        if(searchQuery > 0) {
+        if(searchQuery.length > 0) {
             // Reset the lastDoc for the original query
             lastDoc.current = null;
 
             const key = OPTIONS[option]; // Key for selected option
 
-            let contactsQuery = query(
-                collection(db, "contacts"),
-                where(key, ">=", searchQuery),
+            let routesQuery = query(
+                collection(db, "routes"),
+                where(key, ">=", String(searchQuery)),
                 limit(25)
             );
 
-            if(key === 'age') {
-                contactsQuery = query(
-                    collection(db, "contacts"),
-                    where(key, ">=", Number(searchQuery)),
-                    limit(25)
-                );
-            }
+            const routesSnapshot = await getDocs(routesQuery);
+            const routesList = routesSnapshot.docs.map(doc => ({id: doc.id, doc: doc, ...doc.data()}));
 
-            const contactsSnapshot = await getDocs(contactsQuery);
-            const contactsList = contactsSnapshot.docs.map(doc => ({id: doc.id, doc: doc, ...doc.data()}));
-
-            setFilteredContacts(contactsList);
+            setFilteredRoutes(routesList);
         }
     };
 
@@ -130,21 +122,6 @@ function HomePage() {
                 setType(MODAL_TYPES[2]);
             }
         });
-    }, []);
-
-    // Fetch uniqueValues for Select
-    useEffect(() => {
-        // Fetch a unique data from firebase to Select component
-        const fetchData = async () => {
-            const data = await getDocs(collection(db, 'uniqueValues'));
-            const options = {};
-            Object.keys(ROWS).forEach(key => {
-                options[ROWS[key]] = [...new Set(data.docs.flatMap(doc => doc.data()[key]))];
-            });
-            setContactOptions(options);
-        };
-
-        fetchData();
     }, []);
 
     return user ? (
@@ -168,22 +145,21 @@ function HomePage() {
                     <Button name='2' />
                     <Button name='3' />
                 </div>
-                <p className="info__text" style={{"margin": "0 0 -14px 0"}}>Отображается: {filteredContacts.length} из INF</p>
-                <Table contacts={filteredContacts}
-                       setContacts={setFilteredContacts}
+                <p className="info__text" style={{"margin": "0 0 -14px 0"}}>Отображается: {filteredRoutes.length} из INF</p>
+                <Table routes={filteredRoutes}
                        onEditClick={(item) => {
-                           onEditClick(item, setSelectedContact, setIsOpen, setType);
+                           onEditClick(item, setSelectedRoute, setIsOpen, setType);
                        }}
                        onDeleteClick={(item) => {
-                           onDeleteClick(item, setFilteredContacts, fetchContacts);
+                           onDeleteClick(item, setFilteredRoutes, fetchRoutes);
                        }}
-                       contactOptions={contactOptions} />
+                       routeOptions={routeOptions} />
             </main>
             {isOpen && <Modal isOpen={isOpen}
                               setIsOpen={setIsOpen}
                               type={type}
-                              selectedContact={selectedContact}
-                              setSelectedContact={setSelectedContact}
+                              selectedRoute={selectedRoute}
+                              setSelectedRoute={setSelectedRoute}
                               user={user}
                               setUser={setUser} />}
         </div>
@@ -192,8 +168,8 @@ function HomePage() {
             {isOpen && <Modal isOpen={isOpen}
                               setIsOpen={setIsOpen}
                               type={type}
-                              selectedContact={selectedContact}
-                              setSelectedContact={setSelectedContact}
+                              selectedRoute={selectedRoute}
+                              setSelectedRoute={setSelectedRoute}
                               user={user}
                               setUser={setUser} />}
         </>
