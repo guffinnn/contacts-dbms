@@ -5,12 +5,7 @@
 /.idea
 /.pnp
 .pnp.js
-/src/data.js
-/src/firebase.js
-firebase.json
-firestore.indexes.json
-package-lock.json
-package.json
+**/src/firebase.js
 
 # testing
 /coverage
