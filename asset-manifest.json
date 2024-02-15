@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/transport-dbms/static/css/main.1c89d8d8.css",
-    "main.js": "/transport-dbms/static/js/main.ee767fe2.js",
+    "main.css": "/transport-dbms/static/css/main.e4bc6cd5.css",
+    "main.js": "/transport-dbms/static/js/main.d81b2c59.js",
     "static/media/error.svg": "/transport-dbms/static/media/error.38d8e0d61c5899b14bdd88d863bc5bd9.svg",
     "index.html": "/transport-dbms/index.html",
     "static/media/edit.svg": "/transport-dbms/static/media/edit.59e76d22da27e251b793a19660f29862.svg",
@@ -10,11 +10,11 @@
     "static/media/export.svg": "/transport-dbms/static/media/export.42c84477795ec9b72e9edbf038815fa3.svg",
     "static/media/import.svg": "/transport-dbms/static/media/import.091c96bad9f9de87bc3f1573e0021610.svg",
     "static/media/filter.svg": "/transport-dbms/static/media/filter.73a99df2784d75637e0090281144dcf5.svg",
-    "main.1c89d8d8.css.map": "/transport-dbms/static/css/main.1c89d8d8.css.map",
-    "main.ee767fe2.js.map": "/transport-dbms/static/js/main.ee767fe2.js.map"
+    "main.e4bc6cd5.css.map": "/transport-dbms/static/css/main.e4bc6cd5.css.map",
+    "main.d81b2c59.js.map": "/transport-dbms/static/js/main.d81b2c59.js.map"
   },
   "entrypoints": [
-    "static/css/main.1c89d8d8.css",
-    "static/js/main.ee767fe2.js"
+    "static/css/main.e4bc6cd5.css",
+    "static/js/main.d81b2c59.js"
   ]
 }
