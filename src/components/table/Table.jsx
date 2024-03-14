@@ -40,7 +40,7 @@ function Table({ routes, onEditClick, onDeleteClick, routeOptions }) {
                         <td>{item.from}</td>
                         <td>{item.to}</td>
                         <td>
-                            {item.stops.split(' - ').length > 1 &&
+                            {item.stops?.split(' - ').length > 1 &&
                                 <ul className="stops__for__routes">
                                     {item.stops.split(' - ').map((stop, stopIndex) => (
                                         <li id="stops__name" className="list__value" key={stopIndex}>
